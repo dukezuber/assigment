@@ -1,0 +1,49 @@
+Task 3 ALGORITHM DESIGN
+DSATUR : conflicts resolve
+Greedy :resources 
+Window filtering : SLA
+Penalty : optimization code.
+
+Pseudocode
+1. Compute degree of each task
+
+2. Sort tasks by:
+   - High weight
+   - High degree
+   - Tight SLA window
+
+3. For each task t:
+    bestSlot = -1
+    bestPenalty = ∞
+
+    For slot s in [l_t, u_t]:
+        If conflict exists → skip
+        If resource exceeds → skip
+        Temporarily assign t → s
+        Compute penalty
+        If better:
+            update bestSlot
+
+    If no slot found:
+        Try LOCAL REPAIR
+        If fails → return infeasible
+
+    Assign permanently
+
+4. Return assignment
+
+Try:
+    Remove conflicting task
+    Reassign both tasks
+If success → accept
+
+Time Complexity
+
+Task 4: Approximation & Bound
+Algorithm ensures:
+No conflicts
+No resource overflow
+SLA always respected
+If impossible → returns infeasible
+
+Approximation Bound 
