@@ -2,7 +2,7 @@
 
 ## Author
 
-Najibullah Alam
+Zuber Khan
 
 ## Problem Description
 
