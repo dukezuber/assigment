@@ -38,12 +38,3 @@ Try:
 If success → accept
 
 Time Complexity
-
-Task 4: Approximation & Bound
-Algorithm ensures:
-No conflicts
-No resource overflow
-SLA always respected
-If impossible → returns infeasible
-
-Approximation Bound 

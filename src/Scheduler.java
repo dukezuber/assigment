@@ -1,32 +1,8 @@
-PHASE III — IMPLEMENTATION
-Task 5: Java Implementation
-Concept for write codea are
-->Conflict handling
-->Resource tracking
-->SLA enforcement
-->Penalty computation
-
 import java.util.*;
-
-class Task {
-    String id;
-    double[] res;
-    int l, u;
-    double weight;
-
-    Task(String id, double[] res, int l, int u, double weight) {
-        this.id = id;
-        this.res = res;
-        this.l = l;
-        this.u = u;
-        this.weight = weight;
-    }
-}
 
 class Scheduler {
     int K;
-    double[][] cap;
-    double[][] used;
+    double[][] cap, used;
     Map<String, List<String>> graph;
     Map<String, Integer> assign = new HashMap<>();
 
@@ -47,20 +23,19 @@ class Scheduler {
     }
 
     boolean fits(Task t, int s) {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 4; i++)
             if (used[s][i] + t.res[i] > cap[s][i])
                 return false;
-        }
         return true;
     }
 
     double penalty(List<Task> tasks) {
         double p = 0;
+        double lambda1 = 5, lambda2 = 3;
 
         for (Task t : tasks)
-            p += t.weight * assign.get(t.id);
-
-        double lambda1 = 5, lambda2 = 3;
+            if (assign.containsKey(t.id))
+                p += t.weight * assign.get(t.id);
 
         for (int s = 0; s < K; s++) {
             double unused = 0, total = 0;
@@ -72,8 +47,10 @@ class Scheduler {
         }
 
         for (Task t : tasks) {
-            int s = assign.get(t.id);
-            p += lambda2 * ((double)(s - t.l) / (t.u - t.l + 1));
+            if (assign.containsKey(t.id)) {
+                int s = assign.get(t.id);
+                p += lambda2 * ((double)(s - t.l) / (t.u - t.l + 1));
+            }
         }
 
         return p;
@@ -118,42 +95,4 @@ class Scheduler {
 
         return true;
     }
-}
-
-Task 6: Empirical Analysis & Benchmarking
-
-Explanation of Columns
-Penalty → final objective value
-Runtime → execution time
-Feasible → whether valid assignment found
-Approx Ratio → only for small instances (compared with brute force)
-Chart 1: Penalty vs n
-X-axis → n
-Y-axis → penalty
-Chart 2: Runtime vs n
-X-axis → n
-Y-axis → runtime
-
-Linear Runtime Growth
-Matches complexity 
-𝑂(𝑛⋅𝐾)
-
-Penalty increases with n
-More tasks → more delay + resource usage
-
-
-Sparse Graph Advantage
-n=200, K=20, density=0.10
-
-long start = System.currentTimeMillis();
-
-boolean feasible = scheduler.solve(tasks);
-
-long end = System.currentTimeMillis();
-
-System.out.println("Runtime: " + (end - start) + " ms");
-System.out.println("Feasible: " + feasible);
-
-if (feasible) {
-    System.out.println("Assignment: " + scheduler.assign);
 }
